@@ -86,20 +86,25 @@ window.addEventListener('wheel', e => {
   wheelLocked = true;
   window.setTimeout(() => { wheelLocked = false; }, 420);
 }, { passive: false });
-let swipeStart = null;
-document.addEventListener('pointerdown', e => {
-  if (e.pointerType !== 'touch' || !e.target.closest('.canvas') || e.target.closest('a,button,input,textarea,select')) return;
-  swipeStart = { x: e.clientX, y: e.clientY };
-});
-document.addEventListener('pointerup', e => {
-  if (e.pointerType !== 'touch' || !swipeStart) return;
-  const dx = e.clientX - swipeStart.x;
-  const dy = e.clientY - swipeStart.y;
+let swipeStart = null, touchSwipeLocked = false;
+document.addEventListener('touchstart', e => {
+  const touch = e.touches[0];
+  if (!touch || !e.target.closest('.canvas') || e.target.closest('a,button,input,textarea,select')) return;
+  swipeStart = { x: touch.clientX, y: touch.clientY };
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!swipeStart || touchSwipeLocked) return;
+  const touch = e.changedTouches[0];
+  if (!touch) { swipeStart = null; return; }
+  const dx = touch.clientX - swipeStart.x;
+  const dy = touch.clientY - swipeStart.y;
   swipeStart = null;
-  if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+  if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.15) return;
   show(current + (dx < 0 ? 1 : -1));
-});
-document.addEventListener('pointercancel', () => { swipeStart = null; });
+  touchSwipeLocked = true;
+  window.setTimeout(() => { touchSwipeLocked = false; }, 420);
+}, { passive: true });
+document.addEventListener('touchcancel', () => { swipeStart = null; }, { passive: true });
 const initial = destinations.findIndex(d => `#${d.id}` === location.hash); show(initial < 0 ? 0 : initial, false);
 document.getElementById('contact-form').addEventListener('submit', e => {
   e.preventDefault();
