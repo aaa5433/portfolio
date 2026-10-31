@@ -86,6 +86,20 @@ window.addEventListener('wheel', e => {
   wheelLocked = true;
   window.setTimeout(() => { wheelLocked = false; }, 420);
 }, { passive: false });
+let swipeStart = null;
+document.addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'touch' || !e.target.closest('.canvas') || e.target.closest('a,button,input,textarea,select')) return;
+  swipeStart = { x: e.clientX, y: e.clientY };
+});
+document.addEventListener('pointerup', e => {
+  if (e.pointerType !== 'touch' || !swipeStart) return;
+  const dx = e.clientX - swipeStart.x;
+  const dy = e.clientY - swipeStart.y;
+  swipeStart = null;
+  if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+  show(current + (dx < 0 ? 1 : -1));
+});
+document.addEventListener('pointercancel', () => { swipeStart = null; });
 const initial = destinations.findIndex(d => `#${d.id}` === location.hash); show(initial < 0 ? 0 : initial, false);
 document.getElementById('contact-form').addEventListener('submit', e => {
   e.preventDefault();
