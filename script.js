@@ -8,7 +8,7 @@ const destinations = [
 
 const titles = {
   editorial: [
-    '인천공항 브로슈어', '영창피아노', '도시 산책자', '작은 수집', '오늘의 문장',
+    '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '작은 수집', '오늘의 문장',
     '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
   ],
   digital: [
@@ -19,12 +19,12 @@ const titles = {
   ]
 };
 const editorialLabels = [
-  '인천공항 브로슈어', '영창피아노', '도시 산책자', '작은 수집', '오늘의 문장',
+  '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '작은 수집', '오늘의 문장',
   '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
 ];
 // 각 작품 폴더에 들어 있는 이미지 장수만 적습니다.
 // 파일명은 01.jpg, 02.jpg, 03.jpg처럼 연속 번호로 맞춰주세요.
-const editorialImageCounts = [3, 2, 0, 0, 0, 0, 0, 0, 0, 0];
+const editorialImageCounts = [3, 2, 1, 0, 0, 0, 0, 0, 0, 0];
 const digitalImageCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function makeImageSets(folder, imageCounts) {
@@ -376,3 +376,4 @@ document.getElementById('contact-form').addEventListener('submit', event => {
   window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`;
   document.getElementById('form-note').textContent = '기본 메일 앱을 열었습니다. 공개 전 hello@example.com을 본인 주소로 바꿔주세요.';
 });
+
