@@ -24,7 +24,7 @@ const editorialLabels = [
 ];
 // 작품별 이미지 경로입니다. 각 배열 안의 순서대로 좌우 넘김이 동작합니다.
 const editorialImageSets = [
-  ['img/editorial/01/01.jpg', 'img/editorial/01/02.jpg', 'img/editorial/01/03.jpg'], // 틈의 기록
+  ['img/editorial/01/01.jpg', 'img/editorial/01/02.jpg'], // 틈의 기록
   ['img/editorial/02/01.jpg', 'img/editorial/02/02.jpg'], // 느린 계절
   ['img/editorial/03/01.jpg'], // 도시 산책자
   ['img/editorial/04/01.jpg'], // 작은 수집
@@ -94,7 +94,6 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 // 작품 팝업을 열고 닫습니다.
 const workModal = document.getElementById('work-modal');
 const modalImage = document.getElementById('modal-image');
-const modalFallback = document.getElementById('modal-fallback');
 const modalTitle = document.getElementById('modal-title');
 let lastFocusedCard = null;
 let activeProjectIndex = 0;
@@ -114,22 +113,17 @@ function openWork(card) {
 function showWorkImage(index) {
   const imageSet = editorialImageSets[activeProjectIndex];
   activeImageIndex = Math.max(0, Math.min(imageSet.length - 1, index));
-  const cards = document.querySelectorAll('.work-grid[data-set="editorial"] .work-card');
   const path = imageSet[activeImageIndex];
 
   modalImage.hidden = true;
-  modalFallback.hidden = false;
-  modalFallback.replaceChildren(cards[activeProjectIndex].querySelector('.work-art').cloneNode(true));
   modalImage.alt = `${titles.editorial[activeProjectIndex]} ${activeImageIndex + 1}`;
   modalImage.onload = () => {
     if (modalImage.getAttribute('src') !== path) return;
     modalImage.hidden = false;
-    modalFallback.hidden = true;
   };
   modalImage.onerror = () => {
     if (modalImage.getAttribute('src') !== path) return;
     modalImage.hidden = true;
-    modalFallback.hidden = false;
   };
   modalImage.src = path;
   workModal.querySelector('.modal-prev').disabled = activeImageIndex === 0;
@@ -144,8 +138,6 @@ function closeWork() {
   document.body.classList.remove('modal-open');
   modalImage.removeAttribute('src');
   modalImage.hidden = true;
-  modalFallback.replaceChildren();
-  modalFallback.hidden = true;
   lastFocusedCard?.focus();
 }
 

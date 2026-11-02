@@ -1013,7 +1013,7 @@ body {
 }
 
 /* Fullscreen editorial image viewer */
-.work-modal[hidden], .modal-image[hidden], .modal-fallback[hidden] { display: none; }
+.work-modal[hidden], .modal-image[hidden] { display: none; }
 .work-modal {
     position: fixed;
     inset: 0;
@@ -1051,19 +1051,6 @@ body {
     max-height: 80vh;
     object-fit: contain;
 }
-.modal-fallback {
-    width: min(74vw, 1000px);
-    height: 80vh;
-    display: grid;
-    place-items: center;
-}
-.modal-fallback .work-art {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-}
-.modal-fallback .cover { font-size: 14px; }
-.modal-fallback .cover b { font-size: clamp(32px, 6vw, 72px); }
 .modal-close, .modal-arrow {
     position: absolute;
     z-index: 2;
@@ -1102,7 +1089,6 @@ body {
     .modal-close { top: 12px; right: 12px; width: 42px; height: 42px; }
     .modal-image-wrap { max-width: 90vw; max-height: 80svh; }
     .modal-image { max-width: 90vw; max-height: 80svh; }
-    .modal-fallback { width: 72vw; height: 72svh; }
     .modal-prev { left: 8px; }
     .modal-next { right: 8px; }
     .modal-arrow { width: 40px; height: 52px; }
