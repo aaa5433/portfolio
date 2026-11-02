@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5f3">
   <title>Portfolio — Radio 88.1</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="canvas">
     <div class="page-meta"><span>PERSONAL PORTFOLIO</span><span id="page-index">01 / 04</span></div>
-    <section class="panel active" id="about" data-station="88.1" aria-labelledby="about-title">
+    <section class="panel active" id="about" aria-labelledby="about-title">
       <div class="intro">
         <p class="eyebrow">DESIGNER · SEOUL, KR</p>
         <h1 id="about-title">안녕하세요,<br>좋은 경험을 만드는<br><em>디자이너</em>입니다.</h1>
@@ -18,21 +18,33 @@
       </div>
       <div class="about-stamp" aria-hidden="true"><span>CURIOUS<br>BY NATURE</span><i>✳</i></div>
     </section>
-    <section class="panel" id="edit" data-station="91.3" aria-labelledby="edit-title">
+    <section class="panel" id="edit" aria-labelledby="edit-title">
       <header class="section-head"><div><p class="eyebrow">SELECTED WORK · 2021—25</p><h2 id="edit-title">편집 <span>—</span></h2></div><p class="section-count">01 — 10</p></header>
       <div class="work-grid" data-set="editorial"></div>
     </section>
-    <section class="panel" id="webapp" data-station="96.7" aria-labelledby="web-title">
+    <section class="panel" id="webapp" aria-labelledby="web-title">
       <header class="section-head"><div><p class="eyebrow">DIGITAL EXPERIENCES · 2021—25</p><h2 id="web-title">웹 / 앱 <span>—</span></h2></div><p class="section-count">01 — 10</p></header>
       <div class="work-grid" data-set="digital"></div>
     </section>
-    <section class="panel" id="contact" data-station="101.9" aria-labelledby="contact-title">
+    <section class="panel" id="contact" aria-labelledby="contact-title">
       <header class="section-head"><div><p class="eyebrow">LET’S MAKE SOMETHING GOOD</p><h2 id="contact-title">연락하기 <span>—</span></h2></div></header>
-      <div class="contact-layout"><div class="contact-copy"><p>새로운 프로젝트와 좋은 대화를 기다립니다.</p><a class="phone" href="tel:">PHONE <span>전화번호를 입력해 주세요</span></a><p class="small-note">아래 폼의 메일 주소를 본인 주소로 바꾸면 바로 사용할 수 있어요.</p></div>
+      <div class="contact-layout">
+        <div class="contact-copy"><p>새로운 프로젝트와 좋은 대화를 기다립니다.</p><a class="phone" href="tel:">PHONE <span>전화번호를 입력해 주세요</span></a><p class="small-note">아래 폼의 메일 주소를 본인 주소로 바꾸면 바로 사용할 수 있어요.</p></div>
         <form class="contact-form" id="contact-form"><label>이름<input name="name" placeholder="성함" required></label><label>이메일<input name="email" type="email" placeholder="you@example.com" required></label><label>메시지<textarea name="message" rows="4" placeholder="함께 나누고 싶은 이야기를 적어주세요." required></textarea></label><button type="submit">메일 보내기 <span>↗</span></button><p class="form-note" id="form-note">메일 앱을 열어 메시지를 전달합니다.</p></form>
       </div>
     </section>
   </main>
+  <div class="work-modal" id="work-modal" role="dialog" aria-modal="true" aria-label="편집 작품 이미지" tabindex="-1" hidden>
+    <button class="modal-backdrop" type="button" data-close-modal aria-label="이미지 바깥을 눌러 닫기"></button>
+    <div class="modal-title" id="modal-title"></div>
+    <button class="modal-close" type="button" data-close-modal aria-label="닫기">×</button>
+    <button class="modal-arrow modal-prev" type="button" aria-label="이전 이미지">‹</button>
+    <div class="modal-image-wrap">
+      <img class="modal-image" id="modal-image" alt="" hidden>
+      <div class="modal-fallback" id="modal-fallback" hidden></div>
+    </div>
+    <button class="modal-arrow modal-next" type="button" aria-label="다음 이미지">›</button>
+  </div>
   <aside class="rail" aria-label="사이트 메뉴 및 주파수 조절">
     <div class="rail-top"><a class="wordmark" href="#about" aria-label="처음으로">FM<br><span>STUDIO</span></a><div class="frequency" aria-live="polite"><span id="frequency">88.1</span><small>MHz</small></div></div>
     <nav class="menu" aria-label="주요 메뉴"><a href="#about" data-destination="about" class="selected">About me</a><div class="menu-group"><a href="#edit" data-destination="edit" class="group-title">Portfolio</a><a href="#edit" data-destination="edit" class="sub-link">— 편집</a><a href="#webapp" data-destination="webapp" class="sub-link">— 웹/앱</a></div><a href="#contact" data-destination="contact">Contact</a></nav>
