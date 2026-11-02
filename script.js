@@ -69,7 +69,7 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 
     if (set === 'editorial') {
       card.dataset.workIndex = index;
-      const coverTitle = ['인천공항', '느린\n계절', '산책', '수집', '문장', '사이', '온기', '여백', '장면', '봄'][index];
+      const coverTitle = ['인천공항', '영창피아노', '산책', '수집', '문장', '사이', '온기', '여백', '장면', '봄'][index];
       const fallback = document.createElement('div');
       fallback.className = 'cover';
       fallback.innerHTML = `<i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i><b>${coverTitle}</b><i>SEOUL · 2025</i>`;
