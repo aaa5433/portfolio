@@ -193,6 +193,13 @@ body {
 .work-card:hover .work-art {
     transform: translateY(-4px)
 }
+.work-thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+}
 
 .work-art:before,
 .work-art:after {

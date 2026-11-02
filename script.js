@@ -49,14 +49,18 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 
     if (set === 'editorial') {
       card.dataset.workIndex = index;
-      const coverTitle = ['틈', '느린\n계절', '산책', '수집', '문장'][index % 5];
-      art.innerHTML = `
-        <div class="cover">
-          <i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i>
-          <b>${coverTitle}</b>
-          <i>SEOUL · 2025</i>
-        </div>
-      `;
+      if (index === 0) {
+        art.innerHTML = '<img class="work-thumb" src="img/editorial/01/01.jpg" alt="틈의 기록 표지">';
+      } else {
+        const coverTitle = ['틈', '느린\n계절', '산책', '수집', '문장'][index % 5];
+        art.innerHTML = `
+          <div class="cover">
+            <i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i>
+            <b>${coverTitle}</b>
+            <i>SEOUL · 2025</i>
+          </div>
+        `;
+      }
     } else {
       art.innerHTML = '<div class="phone-mock"><i></i><i></i><i></i></div>';
     }
