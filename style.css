@@ -1040,6 +1040,8 @@ body {
     place-items: center;
     max-width: 90vw;
     max-height: 80vh;
+    touch-action: pan-y;
+    overscroll-behavior-x: contain;
 }
 .modal-image {
     display: block;
@@ -1069,7 +1071,8 @@ body {
     place-items: center;
     border: 0;
     color: #fff;
-    background: rgba(255, 255, 255, .14);
+    background: rgba(0, 0, 0, .62);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, .35);
     cursor: pointer;
 }
 .modal-close {

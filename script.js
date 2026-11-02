@@ -155,6 +155,28 @@ workModal.querySelectorAll('[data-close-modal]').forEach(button => {
 workModal.querySelector('.modal-prev').addEventListener('click', () => showWorkImage(activeImageIndex - 1));
 workModal.querySelector('.modal-next').addEventListener('click', () => showWorkImage(activeImageIndex + 1));
 
+let modalSwipeStart = null;
+workModal.addEventListener('touchstart', event => {
+  if (workModal.hidden || event.target.closest('button')) return;
+  const touch = event.touches[0];
+  if (touch) modalSwipeStart = { x: touch.clientX, y: touch.clientY };
+}, { passive: true });
+
+workModal.addEventListener('touchend', event => {
+  if (!modalSwipeStart) return;
+  const touch = event.changedTouches[0];
+  if (!touch) { modalSwipeStart = null; return; }
+
+  const deltaX = touch.clientX - modalSwipeStart.x;
+  const deltaY = touch.clientY - modalSwipeStart.y;
+  modalSwipeStart = null;
+
+  if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
+  showWorkImage(activeImageIndex + (deltaX < 0 ? 1 : -1));
+}, { passive: true });
+
+workModal.addEventListener('touchcancel', () => { modalSwipeStart = null; }, { passive: true });
+
 window.addEventListener('keydown', event => {
   if (workModal.hidden) return;
   if (event.key === 'Escape') closeWork();
