@@ -8,7 +8,7 @@ const destinations = [
 
 const titles = {
   editorial: [
-    '틈의 기록', '느린 계절', '도시 산책자', '작은 수집', '오늘의 문장',
+    '인천공항 브로슈어', '느린 계절', '도시 산책자', '작은 수집', '오늘의 문장',
     '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
   ],
   digital: [
@@ -19,22 +19,42 @@ const titles = {
   ]
 };
 const editorialLabels = [
-  '틈', '느린 계절', '도시 산책자', '작은 수집', '오늘의 문장',
+  '인천공항 브로슈어', '느린 계절', '도시 산책자', '작은 수집', '오늘의 문장',
   '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
 ];
-// 작품별 이미지 경로입니다. 각 배열 안의 순서대로 좌우 넘김이 동작합니다.
-const editorialImageSets = [
-  ['img/editorial/01/01.jpg', 'img/editorial/01/02.jpg'], // 틈의 기록
-  ['img/editorial/02/01.jpg', 'img/editorial/02/02.jpg'], // 느린 계절
-  ['img/editorial/03/01.jpg'], // 도시 산책자
-  ['img/editorial/04/01.jpg'], // 작은 수집
-  ['img/editorial/05/01.jpg'], // 오늘의 문장
-  ['img/editorial/06/01.jpg'], // 사이의 풍경
-  ['img/editorial/07/01.jpg'], // 온기
-  ['img/editorial/08/01.jpg'], // 여백의 미학
-  ['img/editorial/09/01.jpg'], // 새로운 장면
-  ['img/editorial/10/01.jpg']  // 봄의 목록
-];
+// 각 작품 폴더에 들어 있는 이미지 장수만 적습니다.
+// 파일명은 01.jpg, 02.jpg, 03.jpg처럼 연속 번호로 맞춰주세요.
+const editorialImageCounts = [3, 2, 0, 0, 0, 0, 0, 0, 0, 0];
+const digitalImageCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+function makeImageSets(folder, imageCounts) {
+  return imageCounts.map((count, projectIndex) => {
+    const imagePaths = [];
+    for (let imageNumber = 1; imageNumber <= count; imageNumber++) {
+      const projectFolder = String(projectIndex + 1).padStart(2, '0');
+      const fileName = String(imageNumber).padStart(2, '0');
+      imagePaths.push(`img/${folder}/${projectFolder}/${fileName}.jpg`);
+    }
+    return imagePaths;
+  });
+}
+
+const editorialImageSets = makeImageSets('editorial', editorialImageCounts);
+const digitalImageSets = makeImageSets('digital', digitalImageCounts);
+
+function setThumbnail(art, imagePath, altText, fallback) {
+  if (!imagePath) {
+    art.replaceChildren(fallback);
+    return;
+  }
+
+  const thumbnail = document.createElement('img');
+  thumbnail.className = 'work-thumb';
+  thumbnail.alt = altText;
+  thumbnail.addEventListener('error', () => art.replaceChildren(fallback), { once: true });
+  thumbnail.src = imagePath;
+  art.replaceChildren(thumbnail);
+}
 
 // 작품 목록을 HTML에 넣습니다.
 document.querySelectorAll('.work-grid').forEach(grid => {
@@ -49,20 +69,16 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 
     if (set === 'editorial') {
       card.dataset.workIndex = index;
-      if (index === 0) {
-        art.innerHTML = '<img class="work-thumb" src="img/editorial/01/01.jpg" alt="틈의 기록 표지">';
-      } else {
-        const coverTitle = ['틈', '느린\n계절', '산책', '수집', '문장'][index % 5];
-        art.innerHTML = `
-          <div class="cover">
-            <i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i>
-            <b>${coverTitle}</b>
-            <i>SEOUL · 2025</i>
-          </div>
-        `;
-      }
+      const coverTitle = ['인천공항', '느린\n계절', '산책', '수집', '문장', '사이', '온기', '여백', '장면', '봄'][index];
+      const fallback = document.createElement('div');
+      fallback.className = 'cover';
+      fallback.innerHTML = `<i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i><b>${coverTitle}</b><i>SEOUL · 2025</i>`;
+      setThumbnail(art, editorialImageSets[index]?.[0], `${title} 표지`, fallback);
     } else {
-      art.innerHTML = '<div class="phone-mock"><i></i><i></i><i></i></div>';
+      const fallback = document.createElement('div');
+      fallback.className = 'phone-mock';
+      fallback.innerHTML = '<i></i><i></i><i></i>';
+      setThumbnail(art, digitalImageSets[index]?.[0], `${title} 미리보기`, fallback);
     }
 
     const heading = document.createElement('h3');
@@ -98,6 +114,7 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 // 작품 팝업을 열고 닫습니다.
 const workModal = document.getElementById('work-modal');
 const modalImage = document.getElementById('modal-image');
+const modalFallback = document.getElementById('modal-fallback');
 const modalTitle = document.getElementById('modal-title');
 let lastFocusedCard = null;
 let activeProjectIndex = 0;
@@ -116,18 +133,33 @@ function openWork(card) {
 
 function showWorkImage(index) {
   const imageSet = editorialImageSets[activeProjectIndex];
+  if (!imageSet || imageSet.length === 0) {
+    const cards = document.querySelectorAll('.work-grid[data-set="editorial"] .work-card');
+    modalImage.removeAttribute('src');
+    modalImage.hidden = true;
+    modalFallback.replaceChildren(cards[activeProjectIndex].querySelector('.work-art').cloneNode(true));
+    modalFallback.hidden = false;
+    workModal.querySelector('.modal-prev').disabled = true;
+    workModal.querySelector('.modal-next').disabled = true;
+    return;
+  }
+
   activeImageIndex = Math.max(0, Math.min(imageSet.length - 1, index));
   const path = imageSet[activeImageIndex];
 
   modalImage.hidden = true;
+  modalFallback.hidden = true;
+  modalFallback.replaceChildren(lastFocusedCard.querySelector('.work-art').cloneNode(true));
   modalImage.alt = `${titles.editorial[activeProjectIndex]} ${activeImageIndex + 1}`;
   modalImage.onload = () => {
     if (modalImage.getAttribute('src') !== path) return;
     modalImage.hidden = false;
+    modalFallback.hidden = true;
   };
   modalImage.onerror = () => {
     if (modalImage.getAttribute('src') !== path) return;
     modalImage.hidden = true;
+    modalFallback.hidden = false;
   };
   modalImage.src = path;
   workModal.querySelector('.modal-prev').disabled = activeImageIndex === 0;
@@ -142,6 +174,8 @@ function closeWork() {
   document.body.classList.remove('modal-open');
   modalImage.removeAttribute('src');
   modalImage.hidden = true;
+  modalFallback.replaceChildren();
+  modalFallback.hidden = true;
   lastFocusedCard?.focus();
 }
 
