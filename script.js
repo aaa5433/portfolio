@@ -8,24 +8,23 @@ const destinations = [
 
 const titles = {
   editorial: [
-    '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '그린컴퓨터아트학원', '명함 디자인',
-    '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
+    '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '그린컴퓨터아트학원', '명함',
+    '아라동 주민센터', '온기', '여백의 미학'
   ],
   digital: [
     'Morrow — 습관 기록', 'Local Table — 로컬 지도', 'Pace — 러닝 앱',
-    'Onda — 웰니스', '모아 — 금융 서비스', 'Serein — 스킨케어',
-    'Tide — 여행 가이드', 'Cultivate — 식물 관리',
-    'Daily Form — 저널', 'Room 02 — 공간 예약'
+    'Onda — 웰니스'
   ]
 };
 const editorialLabels = [
-  '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '그린컴퓨터아트학원', '명함 디자인',
-  '사이의 풍경', '온기', '여백의 미학', '새로운 장면', '봄의 목록'
+  '인천공항 브로슈어', '영창피아노', '나의 라임 오렌지 나무 책 표지', '그린컴퓨터아트학원', '명함',
+  '아라동 주민센터', '온기', '여백의 미학'
 ];
+
 // 각 작품 폴더에 들어 있는 이미지 장수만 적습니다.
 // 파일명은 01.jpg, 02.jpg, 03.jpg처럼 연속 번호로 맞춰주세요.
-const editorialImageCounts = [3, 2, 1, 2, 2, 0, 0, 0, 0, 0];
-const digitalImageCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const editorialImageCounts = [3, 2, 1, 2, 2, 2, 0, 0, 0, 0];
+const digitalImageCounts = [0, 0, 0, 0, 0];
 
 function makeImageSets(folder, imageCounts) {
   return imageCounts.map((count, projectIndex) => {
@@ -69,7 +68,7 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 
     if (set === 'editorial') {
       card.dataset.workIndex = index;
-      const coverTitle = ['인천공항', '영창피아노', '산책', '수집', '문장', '사이', '온기', '여백', '장면', '봄'][index];
+      const coverTitle = ['인천공항', '영창피아노', '나의 라임 오렌지 나무 책 표지', '그린컴퓨터아트학원', '명함', '아라동 주민센터', '온기', '여백', '장면', '봄'][index];
       const fallback = document.createElement('div');
       fallback.className = 'cover';
       fallback.innerHTML = `<i>FIELD NOTES　/　${String(index + 1).padStart(2, '0')}</i><b>${coverTitle}</b><i>SEOUL · 2025</i>`;

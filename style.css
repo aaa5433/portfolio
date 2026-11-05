@@ -32,7 +32,7 @@ body {
 .canvas {
     min-height: 100vh;
     margin-right: var(--rail);
-    padding: 40px 5.8vw 54px;
+    padding: 20px 10vw 54px;
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, #fafaf9 0%, #f2f2ef 100%)
@@ -143,7 +143,7 @@ body {
     display: flex;
     align-items: end;
     justify-content: space-between;
-    padding: 12vh 0 38px;
+    padding: 7vh 0 38px;
     border-bottom: 1px solid #dedfd9
 }
 
@@ -171,9 +171,9 @@ body {
 
 .work-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 28px 18px;
-    padding: 32px 0
+    padding: 32px 0;
 }
 
 .work-card {
