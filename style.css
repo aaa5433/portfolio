@@ -32,7 +32,7 @@ body {
 .canvas {
     min-height: 100vh;
     margin-right: var(--rail);
-    padding: 20px 10vw 54px;
+    padding: 20px 11vw 54px;
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, #fafaf9 0%, #f2f2ef 100%)
@@ -143,7 +143,7 @@ body {
     display: flex;
     align-items: end;
     justify-content: space-between;
-    padding: 7vh 0 38px;
+    padding: 5vh 0 5px;
     border-bottom: 1px solid #dedfd9
 }
 
