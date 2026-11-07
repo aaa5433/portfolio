@@ -31,7 +31,7 @@ const titles = {
 
 // 각 작품 폴더의 이미지 개수
 const editorialImageCounts = [3, 2, 1, 2, 2, 2, 4, 2, 0, 0];
-const digitalImageCounts = [1, 1, 1, 1];
+const digitalImageCounts = [3, 3, 3, 3];
 
 
 // ========================================
