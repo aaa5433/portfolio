@@ -760,6 +760,7 @@ body {
     transform: translateY(-50%);
     font: 44px/1 'DM Sans', sans-serif;
 }
+
 .modal-prev { left: 24px; }
 .modal-next { right: 24px; }
 .modal-arrow:disabled { opacity: .25; cursor: default; }
