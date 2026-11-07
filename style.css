@@ -183,7 +183,7 @@ body {
     aspect-ratio: 1.16;
     position: relative;
     overflow: hidden;
-    background: #e7e7e1;
+    background: white;
     display: grid;
     place-items: center;
     transition: transform .35s
@@ -474,17 +474,6 @@ body {
     inset: 0;
     margin: auto;
     z-index: 2
-}
-
-.dial-light {
-    position: absolute;
-    left: 10px;
-    top: 48px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 5px #bdd133
 }
 
 .dial-scale {
