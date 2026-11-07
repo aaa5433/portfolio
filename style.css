@@ -372,7 +372,7 @@ body {
 }
 
 .menu a {
-    font-size: 10px;
+    font-size: 13px;
     color: #777970;
     text-decoration: none;
     transition: color .2s
@@ -394,7 +394,7 @@ body {
 }
 
 .menu .sub-link {
-    font-size: 9px;
+    font-size: 12px;
     padding-left: 7px;
     color: #9a9b94
 }
@@ -1140,7 +1140,7 @@ body {
     }
     
     .about-right h1 {
-        font-size: .5em;
+        font-size: 1.5em;
     }
 
 
