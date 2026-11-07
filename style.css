@@ -940,7 +940,7 @@ body {
     }
 
     .menu a {
-        font-size: 9px;
+        font-size: 13px;
         white-space: nowrap
     }
 
@@ -949,7 +949,7 @@ body {
     }
 
     .menu .sub-link {
-        font-size: 7px;
+        font-size: 11px;
         padding-left: 0
     }
 
@@ -1067,11 +1067,11 @@ body {
     }
 
     .menu a {
-        font-size: 8px
+        font-size: 11px;
     }
 
     .menu .sub-link {
-        font-size: 6px
+        font-size: 10px;
     }
 
     .dial-shell {
