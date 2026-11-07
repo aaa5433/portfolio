@@ -810,13 +810,6 @@ body {
   font-size: 10em;
 }
 
-.about-caption {
-  font-size: 8px;
-  line-height: 1.5;
-  color: #888;
-  margin-top: 8px;
-}
-
 
 
 
@@ -1058,14 +1051,6 @@ body {
         font-size: 10em;
         text-align: center;
         margin-top: -200px;
-    }
-
-    .about-caption {
-        font-size: 8px;
-        line-height: 1.5;
-        color: #888;
-        margin-top: 8px;
-        justify-items: center;
     }
 }
 
