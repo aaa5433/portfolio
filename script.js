@@ -22,10 +22,10 @@ const titles = {
     '아라동 주민센터',
   ],
   digital: [
-    'Morrow — 습관 기록',
-    'Local Table — 로컬 지도',
-    'Pace — 러닝 앱',
-    'Onda — 웰니스'
+    '메모',
+    '맵',
+    '러닝',
+    '금융'
   ]
 };
 
@@ -218,7 +218,9 @@ function openWork(card) {
   // 이미지가 없는 작품이면 가까운 첫 이미지 또는 대체 화면 표시
   if (galleryImages.length === 0) {
     modalTitle.textContent = titles[activeSet][activeProjectIndex];
+    
   }
+  
 
   workModal.hidden = false;
   workModal.setAttribute('aria-hidden', 'false');
@@ -249,70 +251,24 @@ function findProjectIndex(imageIndex) {
 
 // 이미지 표시
 function showGalleryImage() {
-  modalImage.onload = null;
-  modalImage.onerror = null;
-
-  if (galleryImages.length === 0) {
-    modalImage.removeAttribute('src');
-    modalImage.hidden = true;
-
-    modalFallback.replaceChildren(
-      lastFocusedCard.querySelector('.work-art').cloneNode(true)
-    );
-
-    modalFallback.hidden = false;
-
-    workModal.querySelector('.modal-prev').disabled = true;
-    workModal.querySelector('.modal-next').disabled = true;
-
-    return;
-  }
+  if (galleryImages.length === 0) return;
 
   const path = galleryImages[galleryIndex];
 
-  // 현재 이미지의 작품 번호 찾기
   activeProjectIndex = findProjectIndex(galleryIndex);
 
-  // 작품 제목 변경
   modalTitle.textContent = titles[activeSet][activeProjectIndex];
 
-  const cards = document.querySelectorAll(
-    `.work-grid[data-set="${activeSet}"] .work-card`
-  );
-
-  const currentCard = cards[activeProjectIndex];
-
-  modalImage.hidden = true;
-  modalFallback.hidden = false;
-
-  modalFallback.replaceChildren(
-    currentCard.querySelector('.work-art').cloneNode(true)
-  );
-
-  modalImage.alt =
-    `${titles[activeSet][activeProjectIndex]} 이미지 ${galleryIndex + 1}`;
-
   modalImage.onload = () => {
-    if (modalImage.getAttribute('src') !== path) return;
-
     modalImage.hidden = false;
-    modalFallback.hidden = true;
   };
 
   modalImage.onerror = () => {
-    if (modalImage.getAttribute('src') !== path) return;
-
     modalImage.hidden = true;
-    modalFallback.hidden = false;
-
-    modalFallback.replaceChildren(
-      currentCard.querySelector('.work-art').cloneNode(true)
-    );
   };
 
   modalImage.src = path;
 
-  // 처음과 마지막 이미지에서 버튼 비활성화
   workModal.querySelector('.modal-prev').disabled =
     galleryIndex === 0;
 
