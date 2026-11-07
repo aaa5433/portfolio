@@ -1,5 +1,8 @@
 
-// 주파수별로 보여줄 메뉴와 주파수 값을 정합니다.
+// ========================================
+// 1. 메뉴 및 주파수 설정
+// ========================================
+
 const destinations = [
   { id: 'about', station: 88.1 },
   { id: 'edit', station: 91.3 },
@@ -16,18 +19,24 @@ const titles = {
     '명함',
     '패키지디자인',
     'VOGUE',
-    '아라동 주민센터'
+    '아라동 주민센터',
   ],
   digital: [
-    '습관 기록',
-    '맵',
-    '러닝',
-    '금융'
+    'Morrow — 습관 기록',
+    'Local Table — 로컬 지도',
+    'Pace — 러닝 앱',
+    'Onda — 웰니스'
   ]
 };
 
-const editorialImageCounts = [3, 2, 1, 2, 2, 2, 4, 2];
+// 각 작품 폴더의 이미지 개수
+const editorialImageCounts = [3, 2, 1, 2, 2, 2, 4, 2, 0, 0];
 const digitalImageCounts = [1, 1, 1, 1];
+
+
+// ========================================
+// 2. 이미지 경로 생성
+// ========================================
 
 function makeImageSets(folder, imageCounts) {
   return imageCounts.map((count, projectIndex) => {
@@ -49,6 +58,11 @@ const imageSets = {
   digital: makeImageSets('digital', digitalImageCounts)
 };
 
+
+// ========================================
+// 3. 썸네일 및 대체 이미지
+// ========================================
+
 function makeFallback(set, index) {
   if (set === 'digital') {
     const phone = document.createElement('div');
@@ -63,11 +77,11 @@ function makeFallback(set, index) {
     '나의 라임 오렌지 나무 책 표지',
     '그린컴퓨터아트학원',
     '명함',
-    '아라동 주민센터',
+    '패키지디자인',
     'VOGUE',
+    '아라동 주민센터',
     '여백',
-    '장면',
-    '봄'
+    '장면'
   ];
 
   const cover = document.createElement('div');
@@ -104,7 +118,11 @@ function setThumbnail(art, imagePath, altText, fallback) {
   art.replaceChildren(thumbnail);
 }
 
-// 작품 카드 생성
+
+// ========================================
+// 4. 작품 카드 생성
+// ========================================
+
 document.querySelectorAll('.work-grid').forEach(grid => {
   const set = grid.dataset.set;
 
@@ -134,6 +152,7 @@ document.querySelectorAll('.work-grid').forEach(grid => {
 
     const type = document.createElement('div');
     type.className = 'work-type';
+
     type.textContent =
       `${set === 'editorial' ? 'EDITORIAL' : 'DIGITAL'} · ${String(index + 1).padStart(2, '0')}`;
 
@@ -156,53 +175,89 @@ document.querySelectorAll('.work-grid').forEach(grid => {
   });
 });
 
-// 작품 팝업
+
+// ========================================
+// 5. 전체 작품 갤러리 팝업
+// ========================================
+
 const workModal = document.getElementById('work-modal');
 const modalImage = document.getElementById('modal-image');
 const modalFallback = document.getElementById('modal-fallback');
 const modalTitle = document.getElementById('modal-title');
 
 let lastFocusedCard = null;
-let activeSet = 'editorial';
-let activeProjectIndex = 0;
-let activeImageIndex = 0;
 
+// 현재 갤러리 종류
+let activeSet = 'editorial';
+
+// 전체 이미지 목록
+let galleryImages = [];
+
+// 현재 보고 있는 이미지 번호
+let galleryIndex = 0;
+
+// 현재 작품 번호
+let activeProjectIndex = 0;
+
+
+// 작품 클릭 시 갤러리 열기
 function openWork(card) {
   lastFocusedCard = card;
 
   activeSet = card.dataset.workSet;
   activeProjectIndex = Number(card.dataset.workIndex);
-  activeImageIndex = 0;
 
-  modalTitle.textContent = titles[activeSet][activeProjectIndex];
+  // 해당 카테고리 전체 이미지를 하나로 합침
+  galleryImages = imageSets[activeSet].flat();
+
+  // 클릭한 작품의 첫 이미지 위치 계산
+  galleryIndex = imageSets[activeSet]
+    .slice(0, activeProjectIndex)
+    .reduce((total, images) => total + images.length, 0);
+
+  // 이미지가 없는 작품이면 가까운 첫 이미지 또는 대체 화면 표시
+  if (galleryImages.length === 0) {
+    modalTitle.textContent = titles[activeSet][activeProjectIndex];
+  }
 
   workModal.hidden = false;
   workModal.setAttribute('aria-hidden', 'false');
 
   document.body.classList.add('modal-open');
 
-  showWorkImage(0);
+  showGalleryImage();
+
   workModal.focus();
 }
 
-function showWorkImage(index) {
-  const imageSet = imageSets[activeSet][activeProjectIndex];
 
+// 현재 이미지가 속한 작품 찾기
+function findProjectIndex(imageIndex) {
+  let count = 0;
+
+  for (let i = 0; i < imageSets[activeSet].length; i++) {
+    count += imageSets[activeSet][i].length;
+
+    if (imageIndex < count) {
+      return i;
+    }
+  }
+
+  return 0;
+}
+
+
+// 이미지 표시
+function showGalleryImage() {
   modalImage.onload = null;
   modalImage.onerror = null;
 
-  const cards = document.querySelectorAll(
-    `.work-grid[data-set="${activeSet}"] .work-card`
-  );
-
-  const card = cards[activeProjectIndex];
-
-  if (!imageSet || imageSet.length === 0) {
+  if (galleryImages.length === 0) {
     modalImage.removeAttribute('src');
     modalImage.hidden = true;
 
     modalFallback.replaceChildren(
-      card.querySelector('.work-art').cloneNode(true)
+      lastFocusedCard.querySelector('.work-art').cloneNode(true)
     );
 
     modalFallback.hidden = false;
@@ -213,22 +268,29 @@ function showWorkImage(index) {
     return;
   }
 
-  activeImageIndex = Math.max(
-    0,
-    Math.min(imageSet.length - 1, index)
+  const path = galleryImages[galleryIndex];
+
+  // 현재 이미지의 작품 번호 찾기
+  activeProjectIndex = findProjectIndex(galleryIndex);
+
+  // 작품 제목 변경
+  modalTitle.textContent = titles[activeSet][activeProjectIndex];
+
+  const cards = document.querySelectorAll(
+    `.work-grid[data-set="${activeSet}"] .work-card`
   );
 
-  const path = imageSet[activeImageIndex];
+  const currentCard = cards[activeProjectIndex];
 
   modalImage.hidden = true;
   modalFallback.hidden = false;
 
   modalFallback.replaceChildren(
-    card.querySelector('.work-art').cloneNode(true)
+    currentCard.querySelector('.work-art').cloneNode(true)
   );
 
   modalImage.alt =
-    `${titles[activeSet][activeProjectIndex]} ${activeImageIndex + 1}`;
+    `${titles[activeSet][activeProjectIndex]} 이미지 ${galleryIndex + 1}`;
 
   modalImage.onload = () => {
     if (modalImage.getAttribute('src') !== path) return;
@@ -242,17 +304,42 @@ function showWorkImage(index) {
 
     modalImage.hidden = true;
     modalFallback.hidden = false;
+
+    modalFallback.replaceChildren(
+      currentCard.querySelector('.work-art').cloneNode(true)
+    );
   };
 
   modalImage.src = path;
 
+  // 처음과 마지막 이미지에서 버튼 비활성화
   workModal.querySelector('.modal-prev').disabled =
-    activeImageIndex === 0;
+    galleryIndex === 0;
 
   workModal.querySelector('.modal-next').disabled =
-    activeImageIndex === imageSet.length - 1;
+    galleryIndex === galleryImages.length - 1;
 }
 
+
+// 이전 이미지
+function previousImage() {
+  if (galleryIndex <= 0) return;
+
+  galleryIndex--;
+  showGalleryImage();
+}
+
+
+// 다음 이미지
+function nextImage() {
+  if (galleryIndex >= galleryImages.length - 1) return;
+
+  galleryIndex++;
+  showGalleryImage();
+}
+
+
+// 팝업 닫기
 function closeWork() {
   if (workModal.hidden) return;
 
@@ -267,22 +354,33 @@ function closeWork() {
   modalFallback.replaceChildren();
   modalFallback.hidden = true;
 
+  galleryImages = [];
+
   lastFocusedCard?.focus();
 }
 
+
+// 팝업 버튼 이벤트
 workModal.querySelectorAll('[data-close-modal]').forEach(button => {
   button.addEventListener('click', closeWork);
 });
 
-workModal.querySelector('.modal-prev').addEventListener('click', () => {
-  showWorkImage(activeImageIndex - 1);
+workModal.querySelector('.modal-prev').addEventListener('click', previousImage);
+workModal.querySelector('.modal-next').addEventListener('click', nextImage);
+
+
+// ========================================
+// 6. 팝업 키보드 및 모바일 스와이프
+// ========================================
+
+window.addEventListener('keydown', event => {
+  if (workModal.hidden) return;
+
+  if (event.key === 'Escape') closeWork();
+  if (event.key === 'ArrowLeft') previousImage();
+  if (event.key === 'ArrowRight') nextImage();
 });
 
-workModal.querySelector('.modal-next').addEventListener('click', () => {
-  showWorkImage(activeImageIndex + 1);
-});
-
-// 팝업 좌우 스와이프
 let modalSwipeStart = null;
 
 workModal.addEventListener('touchstart', event => {
@@ -318,23 +416,20 @@ workModal.addEventListener('touchend', event => {
     Math.abs(deltaX) < Math.abs(deltaY) * 1.15
   ) return;
 
-  showWorkImage(activeImageIndex + (deltaX < 0 ? 1 : -1));
+  if (deltaX < 0) nextImage();
+  else previousImage();
+
 }, { passive: true });
 
 workModal.addEventListener('touchcancel', () => {
   modalSwipeStart = null;
 }, { passive: true });
 
-// 팝업 키보드 조작
-window.addEventListener('keydown', event => {
-  if (workModal.hidden) return;
 
-  if (event.key === 'Escape') closeWork();
-  if (event.key === 'ArrowLeft') showWorkImage(activeImageIndex - 1);
-  if (event.key === 'ArrowRight') showWorkImage(activeImageIndex + 1);
-});
+// ========================================
+// 7. 주파수 다이얼과 메뉴 연결
+// ========================================
 
-// 주파수 다이얼과 메뉴 연결
 const dial = document.getElementById('dial');
 const dialShell = document.querySelector('.dial-shell');
 const frequency = document.getElementById('frequency');
@@ -350,6 +445,7 @@ let dragging = false;
 let moved = false;
 let startPointerAngle = 0;
 let startAngle = minAngle;
+
 
 function show(index, updateHash = true) {
   current = Math.max(0, Math.min(destinations.length - 1, index));
@@ -378,12 +474,14 @@ function show(index, updateHash = true) {
     (maxAngle - minAngle);
 
   dial.style.transform = `rotate(${angle}deg)`;
+
   dial.setAttribute('aria-valuenow', item.station.toFixed(1));
 
   if (updateHash) {
     history.replaceState(null, '', `#${item.id}`);
   }
 }
+
 
 function updateFromAngle(angle) {
   const bounded = Math.max(minAngle, Math.min(maxAngle, angle));
@@ -418,10 +516,12 @@ function updateFromAngle(angle) {
     `${String(index + 1).padStart(2, '0')} / 04`;
 
   dial.style.transform = `rotate(${bounded}deg)`;
+
   dial.setAttribute('aria-valuenow', frequency.textContent);
 
   history.replaceState(null, '', `#${destinations[index].id}`);
 }
+
 
 function pointerAngle(event) {
   const rect = dial.getBoundingClientRect();
@@ -435,10 +535,13 @@ function pointerAngle(event) {
   ) * 180 / Math.PI;
 }
 
+
 function angleDelta(next, previous) {
   return ((next - previous + 540) % 360) - 180;
 }
 
+
+// 다이얼 드래그
 dialShell.addEventListener('pointerdown', event => {
   dragging = true;
   moved = false;
@@ -452,6 +555,7 @@ dialShell.addEventListener('pointerdown', event => {
 
   dialShell.setPointerCapture(event.pointerId);
 });
+
 
 dialShell.addEventListener('pointermove', event => {
   if (!dragging) return;
@@ -472,6 +576,7 @@ dialShell.addEventListener('pointermove', event => {
   }
 });
 
+
 dialShell.addEventListener('pointerup', () => {
   dragging = false;
 });
@@ -480,6 +585,8 @@ dialShell.addEventListener('pointercancel', () => {
   dragging = false;
 });
 
+
+// 키보드 다이얼 조작
 dial.addEventListener('keydown', event => {
   if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
     event.preventDefault();
@@ -492,6 +599,8 @@ dial.addEventListener('keydown', event => {
   }
 });
 
+
+// 메뉴 클릭
 menuLinks.forEach(link => {
   link.addEventListener('click', event => {
     event.preventDefault();
@@ -504,8 +613,10 @@ menuLinks.forEach(link => {
   });
 });
 
+
+// 키보드 메뉴 이동
 window.addEventListener('keydown', event => {
-  if (workModal && !workModal.hidden) return;
+  if (!workModal.hidden) return;
 
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
     return;
@@ -515,11 +626,16 @@ window.addEventListener('keydown', event => {
   if (event.key === 'ArrowUp') show(current - 1);
 });
 
-// 데스크톱 마우스 휠 이동
+
+// ========================================
+// 8. 마우스 휠 메뉴 이동
+// ========================================
+
 let wheelLocked = false;
 
 window.addEventListener('wheel', event => {
   if (
+    !event.target.closest('.canvas') ||
     ['INPUT', 'TEXTAREA'].includes(event.target.tagName) ||
     wheelLocked ||
     Math.abs(event.deltaY) < Math.abs(event.deltaX)
@@ -534,9 +650,14 @@ window.addEventListener('wheel', event => {
   window.setTimeout(() => {
     wheelLocked = false;
   }, 420);
+
 }, { passive: false });
 
-// 스마트폰 좌우 스와이프 메뉴 이동
+
+// ========================================
+// 9. 모바일 좌우 스와이프 메뉴 이동
+// ========================================
+
 let swipeStart = null;
 let touchSwipeLocked = false;
 
@@ -550,14 +671,17 @@ document.addEventListener('touchstart', event => {
   if (
     !touch ||
     !event.target.closest('.canvas') ||
-    isControl
+    isControl ||
+    !workModal.hidden
   ) return;
 
   swipeStart = {
     x: touch.clientX,
     y: touch.clientY
   };
+
 }, { passive: true });
+
 
 document.addEventListener('touchend', event => {
   if (!swipeStart || touchSwipeLocked) return;
@@ -586,20 +710,30 @@ document.addEventListener('touchend', event => {
   window.setTimeout(() => {
     touchSwipeLocked = false;
   }, 420);
+
 }, { passive: true });
+
 
 document.addEventListener('touchcancel', () => {
   swipeStart = null;
 }, { passive: true });
 
-// 처음 접속했을 때 주소에 맞는 화면 표시
+
+// ========================================
+// 10. 처음 화면 설정
+// ========================================
+
 const initialIndex = destinations.findIndex(
   item => `#${item.id}` === location.hash
 );
 
 show(initialIndex < 0 ? 0 : initialIndex, false);
 
-// Contact 폼
+
+// ========================================
+// 11. Contact 이메일 폼
+// ========================================
+
 document.getElementById('contact-form').addEventListener('submit', event => {
   event.preventDefault();
 
