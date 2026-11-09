@@ -1138,12 +1138,12 @@ body {
     }
 
     .about-right {
-        margin-top: -100px;
         height: 550px;
     }
     
     .about-right h1 {
-        font-size: 100px;
+    margin-top: 100px;
+    font-size: 100px;
     }
 
 
