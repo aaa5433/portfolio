@@ -704,8 +704,5 @@ document.getElementById('contact-form').addEventListener('submit', event => {
   );
 
   window.location.href =
-    `mailto:hello@example.com?subject=${subject}&body=${body}`;
-
-  document.getElementById('form-note').textContent =
-    '기본 메일 앱을 열었습니다. 공개 전 hello@example.com을 본인 주소로 바꿔주세요.';
+    `mailto:jhmoon6821@gmail.com?subject=${subject}&body=${body}`;
 });
