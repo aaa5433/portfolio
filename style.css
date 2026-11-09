@@ -180,30 +180,37 @@ body {
 }
 
 .work-art {
-    aspect-ratio: 1.16;
     position: relative;
     overflow: hidden;
-    background: white;
-    display: grid;
-    place-items: center;
-    transition: transform .35s
+    aspect-ratio: 1 / .8;
 }
 
-.work-card:hover .work-art {
-    /* transform: translateY(-4px); */
-    opacity: .5;
+.work-art::after {
+    content: "VIEW PROJECT ↗";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font: 11px 'DM Mono', monospace;
+    letter-spacing: .12em;
+    opacity: 0;
+    transition: opacity .3s ease;
 }
+
+.work-card:hover .work-art::after {
+    opacity: 1;
+}
+
 .work-thumb {
     display: block;
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
+    width: 110%;
+    justify-self: center;
 }
 
 .work-art:before,
 .work-art:after {
-    content: '';
     position: absolute
 }
 
@@ -1007,10 +1014,6 @@ body {
         font-size: 11px
     }
 
-    .work-art {
-        aspect-ratio: 1.05
-    }
-
     .contact-layout {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -1190,3 +1193,5 @@ body {
     .modal-next { right: 8px; }
     .modal-arrow { width: 40px; height: 52px; }
 }
+
+
