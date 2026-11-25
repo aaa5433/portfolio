@@ -147,7 +147,8 @@ body {
 }
 
 .section-head .eyebrow {
-    margin-bottom: 12px
+    margin-bottom: 12px;
+    font-size: 8px;
 }
 
 .section-head h2 {
