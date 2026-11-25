@@ -760,7 +760,7 @@ body {
 
 .about-card {
     min-width: 0;
-    padding: clamp(22px, 3vw, 38px);
+    padding: clamp(15px, 3vw, 30px);
     background: rgba(255, 255, 255, .62);
     border: 1px solid #e3e4de;
 }
@@ -773,8 +773,26 @@ body {
     min-height: 280px;
 }
 
-.about-intro .eyebrow {
+.about-eyebrow-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 24px;
+    max-height: 20px;
+}
+
+.about-eyebrow-row .eyebrow {
+    margin: 0;
+    padding-top: 5px;
+}
+
+.about-emoticon {
+    display: block;
+    flex: 0 0 auto;
+    width: clamp(100px, 20vw, 150px);
+    height: auto;
+    object-fit: contain;
 }
 
 .about-intro h2 {
@@ -783,11 +801,12 @@ body {
     line-height: 1.4;
     font-weight: 400;
     letter-spacing: -.05em;
+    font-size: 1.2em;
 }
 
 .about-intro h1 {
     margin: 2px 0 0;
-    font-size: clamp(54px, 6vw, 78px);
+    font-size: clamp(30px, 6vw, 50px);
     line-height: 1.2;
     font-weight: 600;
     letter-spacing: -.07em;
@@ -926,6 +945,35 @@ body {
     font: 8px 'DM Mono', monospace;
     letter-spacing: .12em;
     text-align: right;
+}
+
+.publishing-skills {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #e3e4de;
+}
+
+.publishing-label {
+    margin: 0 0 14px;
+    color: #92938c;
+    font: 10px 'DM Mono', monospace;
+    letter-spacing: .14em;
+}
+
+.tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tech-list li {
+    padding: 7px 11px;
+    border: 1px solid #e3e4de;
+    color: #55574f;
+    font: 11px 'DM Mono', monospace;
 }
 
 .about-approach {
@@ -1304,6 +1352,20 @@ body {
 
     .about-intro h1 {
         font-size: clamp(52px, 15vw, 72px);
+    }
+
+    .about-eyebrow-row {
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+
+    .about-eyebrow-row .eyebrow {
+        font-size: 8px;
+        letter-spacing: .1em;
+    }
+
+    .about-emoticon {
+        width: 48px;
     }
 
     .skill-row {
