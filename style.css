@@ -112,32 +112,6 @@ body {
     white-space: nowrap
 }
 
-.about-stamp {
-    position: absolute;
-    right: 10%;
-    bottom: 12%;
-    width: 112px;
-    height: 112px;
-    border: 1px solid #d8d9d3;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    font: 9px/1.6 'DM Mono', monospace;
-    letter-spacing: .1em;
-    color: #8e9088;
-    transform: rotate(-12deg)
-}
-
-.about-stamp i {
-    position: absolute;
-    right: -13px;
-    top: 2px;
-    font-size: 24px;
-    color: var(--lime);
-    font-style: normal
-}
-
 .section-head {
     display: flex;
     align-items: end;
@@ -773,55 +747,251 @@ body {
 .modal-title {position: absolute;top: 26px;left: 50%;z-index: 2;max-width: calc(100vw - 150px);transform: translateX(-50%);color: #fff;font: 500 15px 'Noto Sans KR', sans-serif;/* letter-spacing: .12em; */text-align: center;}
 
 
-.about-main-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 150px;
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-45%);
-  max-width: 750px;
+.about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+    grid-template-areas:
+        "intro visual"
+        "tools approach"
+        "focus process";
+    gap: 18px;
+    padding: clamp(1vh, 8vh, 1vh) 0 10px;
 }
 
-.about-left,
-.about-right {
-  padding: 10px;
-  align-content: center;
+.about-card {
+    min-width: 0;
+    padding: clamp(22px, 3vw, 38px);
+    background: rgba(255, 255, 255, .62);
+    border: 1px solid #e3e4de;
 }
 
-.about-left h1,
-.about-left p,
-.about-left h2 {
-  margin: 0;
-  font-size: 3em;
+.about-intro {
+    grid-area: intro;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 280px;
 }
 
-.about-left p {
-  margin-top: 3px;
-  font-size: 2em;
+.about-intro .eyebrow {
+    margin-bottom: 24px;
 }
 
-.about-left h2 {
-  margin-top: 3px;
-  font-size: 2em;
+.about-intro h2 {
+    margin: 0;
+    font-size: clamp(22px, 2.8vw, 38px);
+    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: -.05em;
 }
 
-.about-left h2 span {
-  color: #bdd133;
+.about-intro h1 {
+    margin: 2px 0 0;
+    font-size: clamp(54px, 6vw, 78px);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -.07em;
 }
 
-.about-right {
-  font-size: 10em;
+.about-meta {
+    margin: 18px 0 0;
+    color: #777970;
+    font-size: 14px;
 }
 
+.about-meta span {
+    padding: 0 6px;
+    color: var(--lime);
+}
 
+.about-description {
+    max-width: 440px;
+    margin: 18px 0 0;
+    color: #777970;
+    font-size: 14px;
+    line-height: 1.9;
+    word-break: keep-all;
+}
 
+.about-visual {
+    grid-area: visual;
+    position: relative;
+    display: grid;
+    min-height: 280px;
+    overflow: hidden;
+    place-items: center;
+    background:
+        radial-gradient(circle at 54% 46%, rgba(255, 255, 255, .92) 0 18%, transparent 18.5%),
+        radial-gradient(circle at 54% 46%, rgba(189, 209, 51, .27) 0 38%, transparent 38.5%),
+        linear-gradient(140deg, #f1f3eb, #e4eee8);
+}
 
+.about-orbit {
+    display: grid;
+    width: min(52%, 180px);
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(37, 38, 34, .18);
+    border-radius: 50%;
+    color: var(--lime);
+    font-size: 42px;
+}
 
+.about-orbit::before,
+.about-orbit::after {
+    position: absolute;
+    content: "";
+    border: 1px solid rgba(37, 38, 34, .12);
+    border-radius: 50%;
+}
 
+.about-orbit::before {
+    width: min(68%, 230px);
+    aspect-ratio: 1;
+}
 
+.about-orbit::after {
+    width: min(84%, 280px);
+    aspect-ratio: 1;
+}
 
+.visual-caption {
+    position: absolute;
+    left: 24px;
+    bottom: 20px;
+    margin: 0;
+    color: #777970;
+    font: 10px/1.7 'DM Mono', monospace;
+    letter-spacing: .14em;
+}
+
+.visual-coordinate {
+    position: absolute;
+    right: 22px;
+    top: 20px;
+    color: #8d8e86;
+    font: 8px 'DM Mono', monospace;
+    letter-spacing: .1em;
+}
+
+.about-tools {
+    grid-area: tools;
+}
+
+.about-card-label {
+    margin: 0 0 24px;
+    color: #92938c;
+    font: 10px 'DM Mono', monospace;
+    letter-spacing: .14em;
+}
+
+.skill-row {
+    display: grid;
+    grid-template-columns: 92px minmax(40px, 1fr) 24px;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.skill-track {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #e6e7e1;
+}
+
+.skill-track i {
+    display: block;
+    width: var(--skill);
+    height: 100%;
+    border-radius: inherit;
+    background: var(--lime);
+}
+
+.skill-row b {
+    color: #777970;
+    font: 11px 'DM Mono', monospace;
+    text-align: right;
+}
+
+.skill-scale {
+    margin: 22px 0 0;
+    color: #a0a099;
+    font: 8px 'DM Mono', monospace;
+    letter-spacing: .12em;
+    text-align: right;
+}
+
+.about-approach {
+    grid-area: approach;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 210px;
+    background: #f0f1eb;
+}
+
+.about-approach p {
+    margin: 0 0 24px;
+    font-size: clamp(20px, 2.4vw, 30px);
+    line-height: 1.7;
+    letter-spacing: -.05em;
+    word-break: keep-all;
+}
+
+.about-approach > span {
+    color: #92938c;
+    font: 8px 'DM Mono', monospace;
+    letter-spacing: .12em;
+}
+
+.about-focus {
+    grid-area: focus;
+}
+
+.focus-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.focus-list li {
+    display: flex;
+    min-height: 82px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px;
+    border: 1px solid #e3e4de;
+    font-size: 13px;
+    word-break: keep-all;
+}
+
+.focus-list li span {
+    color: #a0a099;
+    font: 9px 'DM Mono', monospace;
+}
+
+.about-process {
+    grid-area: process;
+    background: #f0f1eb;
+}
+
+.about-process p {
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.9;
+    word-break: keep-all;
+}
+
+.about-process > span {
+    color: #92938c;
+    font: 8px 'DM Mono', monospace;
+    letter-spacing: .1em;
+}
 
 
 
@@ -879,18 +1049,6 @@ body {
     .scroll-note {
         display: block;
         margin-top: 18px
-    }
-
-    .about-stamp {
-        width: 76px;
-        height: 76px;
-        right: 25px;
-        bottom: 12%;
-        font-size: 7px
-    }
-
-    .about-stamp i {
-        font-size: 17px
     }
 
     .rail {
@@ -1029,30 +1187,6 @@ body {
         margin-top: 15px
     }
 
-    
-
-    .about-main-grid {
-        display: contents;
-        min-height: 150px;
-        box-sizing: border-box;
-        position: absolute;
-        transform: translateY(-45%);
-    }
-
-    .about-left,
-    .about-right {
-        padding: 10px;
-        justify-items: center;
-        margin-top: 50px;
-        /* height: 550px; */
-    }
-    
-
-    .about-right {
-        font-size: 10em;
-        text-align: center;
-        margin-top: -200px;
-    }
 }
 
 @media(max-width:390px) {
@@ -1134,16 +1268,51 @@ body {
         cursor: pointer;
     }
 
-    .about-right {
-        height: 550px;
-    }
-    
-    .about-right h1 {
-    margin-top: 100px;
-    font-size: 100px;
+}
+
+@media (max-width: 640px) {
+    .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "intro"
+            "visual"
+            "tools"
+            "approach"
+            "focus"
+            "process";
+        gap: 12px;
+        padding-top: 34px;
     }
 
+    .about-intro,
+    .about-visual {
+        min-height: 240px;
+    }
 
+    .about-card {
+        padding: 22px;
+    }
+
+    .about-intro h1 {
+        font-size: clamp(52px, 15vw, 72px);
+    }
+
+    .skill-row {
+        grid-template-columns: 84px minmax(40px, 1fr) 24px;
+        gap: 10px;
+    }
+
+    .about-approach {
+        min-height: 180px;
+    }
+
+    .focus-list {
+        grid-template-columns: 1fr;
+    }
+
+    .focus-list li {
+        min-height: 60px;
+    }
 }
 
 
@@ -1190,5 +1359,3 @@ body {
     .modal-next { right: 8px; }
     .modal-arrow { width: 40px; height: 52px; }
 }
-
-
